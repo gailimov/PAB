@@ -47,36 +47,11 @@ class Router
     private $_defaultAction = 'index';
     
     /**
-     * Run
-     * 
-     * @return void
-     */
-    public function run()
-    {
-        $this->dispatch($this->getUriSegments());
-        
-        $class = '\\app\\controllers\\' . $this->_controller;
-        if (!class_exists($class))
-            throw new \Exception('Controller class ' . $class . ' not found');
-            
-        $obj = new $class(new Request(array(
-            'controller' => $this->_controller,
-            'action'     => $this->_action,
-            'params'     => $this->_params
-        )));
-        
-        if (is_callable(array($class, $this->_action)))
-            call_user_func_array(array($obj, $this->_action), $this->_params);
-        else
-            throw new \Exception('404 Not Found');
-    }
-    
-    /**
      * Get URI
      * 
      * @return array
      */
-    public function getUri()
+    private function getUri()
     {
         return !empty($_SERVER['REQUEST_URI'])  ? $_SERVER['REQUEST_URI']  : null;
         return !empty($_SERVER['PATH_INFO'])    ? $_SERVER['PATH_INFO']    : null;
@@ -111,13 +86,20 @@ class Router
     /**
      * Dispatch
      * 
-     * @param  array $segments URI segments
      * @return void
      */
-    private function dispatch(array $segments)
+    public function dispatch()
     {
+        $segments = $this->getUriSegments();
+        
         $this->_controller = !empty($segments[0]) ? ucfirst($segments[0]) . 'Controller' : $this->_defaultController . 'Controller';
         $this->_action     = !empty($segments[1]) ? $segments[1] . 'Action'              : $this->_defaultAction . 'Action';
         $this->_params     = array_slice($segments, 2);
+        
+        return array(
+            'controller' => $this->_controller,
+            'action' => $this->_action,
+            'params' => $this->_params
+        );
     }
 }

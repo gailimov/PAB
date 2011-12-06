@@ -23,12 +23,12 @@ class Config
      * 
      * @param string $file Config file
      */
-    public function __construct($file)
+    private function __construct($file)
     {
         $path = Registry::get('rootPath') . '/app/config/' . $file . '.php';
         if (!file_exists($path))
             throw new \Exception('Config file ' . $path . ' not found');
-        $this->params = require_once $path;
+        $this->params = require $path;
     }
     
     /**

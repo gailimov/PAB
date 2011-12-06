@@ -2,19 +2,21 @@
 
 namespace app\controllers;
 
-use core\Controller,
-    core\View;
+use app\controllers\AppController,
+    core\Db;
 
-class PostsController extends Controller
+class PostsController extends AppController
 {
     public function indexAction()
     {
-        $this->_view->render('posts/index');
+        $posts = Db::factory('Posts')->getAll();
+        $this->render('posts/index', array('posts' => $posts));
     }
     
-    public function helloAction($name = 'Vasya')
+    public function showAction($slug)
     {
-        $message = 'Hello, ' . $name . '!';
-        $this->_view->renderPartial('posts/hello', compact('message'));
+        $post = Db::factory('Posts')->getBySlug($slug);
+        $this->title = $this->appendTitle($post['title']);
+        $this->render('posts/show', array('post' => $post));
     }
 }

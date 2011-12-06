@@ -2,14 +2,14 @@
 <html>
     <head>
         <meta charset="utf-8" />
-        <link rel="stylesheet" href="<?= \core\Config::factory()->params['baseUrl'] ?>/public/css/style.css" media="all" />
-        <title>Pretty Awesome Blog</title>
+        <link rel="stylesheet" href="<?= $this->getConfig()->params['url'] ?>/public/css/style.css" media="all" />
+        <title><?= $this->title ?></title>
     </head>
     <body>
         <div class="wrapper">
             <div class="header">
                 <header class="title">
-                    <h1><a href="#" title="На главную">Pretty Awesome Blog</a></h1>
+                    <h1><a href="<?= $this->getConfig()->params['url'] ?>" title="На главную"><?= $this->getConfig()->params['title'] ?></a></h1>
                 </header>
                 <nav>
                     <ul>
@@ -21,7 +21,7 @@
             <div class="clear"></div>
             <?= $content ?>
             <footer>
-                &copy; 2011 &laquo;Pretty Awesome Blog&raquo;
+                &copy; <?= date('Y') ?> &laquo;<?= $this->getConfig()->params['title'] ?>&raquo;
             </footer>
         </div> <!-- .wrapper -->
     </body>

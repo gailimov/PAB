@@ -1,17 +1,12 @@
 <?php
 
-function __autoload($className)
-{
-    $path = __DIR__ . '/' . str_replace('\\', '/', $className) . '.php';
-    if (!file_exists($path))
-        throw new \Exception('File ' . $path . ' not found');
-    require_once $path;
-}
+require_once __DIR__ . '/core/Loader.php';
 
-use core\Registry,
-    core\Router;
+\core\Loader::factory()
+    ->registerPath(__DIR__ . '/')
+    ->registerPath(__DIR__ . '/vendors/')
+    ->registerAutoload();
 
-Registry::set('rootPath', __DIR__);
+\core\Registry::set('rootPath', __DIR__);
 
-$router = new Router();
-$router->run();
+\core\FrontController::run();
