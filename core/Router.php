@@ -2,17 +2,49 @@
 
 namespace core;
 
+/**
+ * Router
+ * 
+ * @author    Kanat Gailimov <gailimov@gmail.com>
+ * @copyright 2011 Kanat Gailimov (http://kanat.gailimov.kz)
+ * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License v3
+ */
 class Router
 {
     /**
-     * Return new instance
+     * Controller
      * 
-     * @return \core\Router
+     * @var string
      */
-    public static function factory()
-    {
-        return new self();
-    }
+    private $_controller;
+    
+    /**
+     * Action
+     * 
+     * @var string
+     */
+    private $_action;
+    
+    /**
+     * Params
+     * 
+     * @var array
+     */
+    private $_params = array();
+    
+    /**
+     * Default controller
+     * 
+     * @var string
+     */
+    private $_defaultController = 'Posts';
+    
+    /**
+     * Default action
+     * 
+     * @var string
+     */
+    private $_defaultAction = 'index';
     
     /**
      * Run
@@ -22,6 +54,21 @@ class Router
     public function run()
     {
         $this->dispatch($this->getUriSegments());
+        
+        $class = '\\app\\controllers\\' . $this->_controller;
+        if (!class_exists($class))
+            throw new \Exception('Controller class ' . $class . ' not found');
+            
+        $obj = new $class(new Request(array(
+            'controller' => $this->_controller,
+            'action'     => $this->_action,
+            'params'     => $this->_params
+        )));
+        
+        if (is_callable(array($class, $this->_action)))
+            call_user_func_array(array($obj, $this->_action), $this->_params);
+        else
+            throw new \Exception('404 Not Found');
     }
     
     /**
@@ -69,20 +116,8 @@ class Router
      */
     private function dispatch(array $segments)
     {
-        $params = array();
-        
-        $controller = !empty($segments[0]) ? ucfirst($segments[0]) . 'Controller' : 'PostsController';
-        $action     = !empty($segments[1]) ? $segments[1] . 'Action' : 'indexAction';
-        $params     = array_slice($segments, 2);
-        
-        $class = '\\app\\controllers\\' . $controller;
-        
-        if (!class_exists($class))
-            throw new \Exception('Controller class ' . $class . ' not found');
-        
-        if (is_callable(array($class, $action)))
-            call_user_func_array(array($class, $action), $params);
-        else
-            throw new \Exception('404 Not Found');
+        $this->_controller = !empty($segments[0]) ? ucfirst($segments[0]) . 'Controller' : $this->_defaultController . 'Controller';
+        $this->_action     = !empty($segments[1]) ? $segments[1] . 'Action'              : $this->_defaultAction . 'Action';
+        $this->_params     = array_slice($segments, 2);
     }
 }

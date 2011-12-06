@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8" />
-        <link rel="stylesheet" href="<?= \core\Pab::getBaseUrl() ?>/public/css/style.css" media="all" />
+        <link rel="stylesheet" href="<?= \core\Config::factory()->params['baseUrl'] ?>/public/css/style.css" media="all" />
         <title>Pretty Awesome Blog</title>
     </head>
     <body>

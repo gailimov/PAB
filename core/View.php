@@ -2,16 +2,32 @@
 
 namespace core;
 
+/**
+ * View
+ * 
+ * @author    Kanat Gailimov <gailimov@gmail.com>
+ * @copyright 2011 Kanat Gailimov (http://kanat.gailimov.kz)
+ * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License v3
+ */
 class View
 {
     /**
-     * Return new instance
+     * Layout
      * 
+     * @var string
+     */
+    private $_layout = 'app';
+    
+    /**
+     * Set layout
+     * 
+     * @param  string $layout Layout
      * @return \core\View
      */
-    public static function factory()
+    public function setLayout($layout)
     {
-        return new self();
+        $this->_layout = (string) $layout;
+        return $this;
     }
     
     /**
@@ -47,7 +63,7 @@ class View
      */
     private function fetchPartial($template, array $params = null)
     {
-        if ($params !== null) {
+        if ($params) {
             if (is_array($params))
                 extract($params);
             else
@@ -70,6 +86,6 @@ class View
     private function fetch($template, array $params = null)
     {
         $content = $this->fetchPartial($template, $params);
-        return $this->fetchPartial('layouts/application', compact('content'));
+        return $this->fetchPartial('layouts/' . $this->_layout, compact('content'));
     }
 }

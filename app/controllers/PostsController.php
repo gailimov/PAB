@@ -2,18 +2,19 @@
 
 namespace app\controllers;
 
-use core\View;
+use core\Controller,
+    core\View;
 
-class PostsController
+class PostsController extends Controller
 {
     public function indexAction()
     {
-        View::factory()->render('posts/index');
+        $this->_view->render('posts/index');
     }
     
     public function helloAction($name = 'Vasya')
     {
         $message = 'Hello, ' . $name . '!';
-        View::factory()->renderPartial('posts/hello', compact('message'));
+        $this->_view->renderPartial('posts/hello', compact('message'));
     }
 }

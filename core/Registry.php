@@ -2,6 +2,13 @@
 
 namespace core;
 
+/**
+ * Registry
+ * 
+ * @author    Kanat Gailimov <gailimov@gmail.com>
+ * @copyright 2011 Kanat Gailimov (http://kanat.gailimov.kz)
+ * @license   http://www.gnu.org/licenses/gpl.html GNU General Public License v3
+ */
 class Registry
 {
     /**

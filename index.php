@@ -2,14 +2,16 @@
 
 function __autoload($className)
 {
-    $path = str_replace('\\', '/', $className);
-    if (!file_exists(__DIR__ . '/' . $path . '.php'))
-        throw new \Exception('File ' . __DIR__ . '/' . $path . '.php not found');
-    require_once __DIR__ . '/' . $path . '.php';
+    $path = __DIR__ . '/' . str_replace('\\', '/', $className) . '.php';
+    if (!file_exists($path))
+        throw new \Exception('File ' . $path . ' not found');
+    require_once $path;
 }
 
-use core\Router,
-    core\Registry;
+use core\Registry,
+    core\Router;
 
 Registry::set('rootPath', __DIR__);
-Router::factory()->run();
+
+$router = new Router();
+$router->run();
