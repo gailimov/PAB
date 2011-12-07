@@ -16,7 +16,9 @@ class PostsController extends AppController
     public function showAction($slug)
     {
         $post = Db::factory('Posts')->getBySlug($slug);
+        $tags = Db::factory('Tags')->getByPostId($post['id']);
+        $comments = Db::factory('Comments')->getByPostId($post['id']);
         $this->title = $this->appendTitle($post['title']);
-        $this->render('posts/show', array('post' => $post));
+        $this->render('posts/show', compact('post', 'tags', 'comments'));
     }
 }

@@ -47,6 +47,36 @@ class Router
     private $_defaultAction = 'index';
     
     /**
+     * Get base URL
+     * 
+     * @return string
+     */
+    public function getBaseUrl()
+    {
+        return dirname($_SERVER['SCRIPT_NAME']);
+    }
+    
+    /**
+     * Dispatch
+     * 
+     * @return void
+     */
+    public function dispatch()
+    {
+        $segments = $this->getUriSegments();
+        
+        $this->_controller = !empty($segments[0]) ? ucfirst($segments[0]) . 'Controller' : $this->_defaultController . 'Controller';
+        $this->_action     = !empty($segments[1]) ? $segments[1] . 'Action'              : $this->_defaultAction . 'Action';
+        $this->_params     = array_slice($segments, 2);
+        
+        return array(
+            'controller' => $this->_controller,
+            'action' => $this->_action,
+            'params' => $this->_params
+        );
+    }
+    
+    /**
      * Get URI
      * 
      * @return array
@@ -81,25 +111,5 @@ class Router
             unset($segments[count($segments) - 1]);
             
         return $segments;
-    }
-    
-    /**
-     * Dispatch
-     * 
-     * @return void
-     */
-    public function dispatch()
-    {
-        $segments = $this->getUriSegments();
-        
-        $this->_controller = !empty($segments[0]) ? ucfirst($segments[0]) . 'Controller' : $this->_defaultController . 'Controller';
-        $this->_action     = !empty($segments[1]) ? $segments[1] . 'Action'              : $this->_defaultAction . 'Action';
-        $this->_params     = array_slice($segments, 2);
-        
-        return array(
-            'controller' => $this->_controller,
-            'action' => $this->_action,
-            'params' => $this->_params
-        );
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+$startTime = microtime(true);
+
 require_once __DIR__ . '/core/Loader.php';
 
 \core\Loader::factory()
@@ -8,5 +10,12 @@ require_once __DIR__ . '/core/Loader.php';
     ->registerAutoload();
 
 \core\Registry::set('rootPath', __DIR__);
+\core\Registry::set('startTime', $startTime);
 
-\core\FrontController::run();
+try {
+    \core\FrontController::run();
+} catch (\core\NotFoundException $e) {
+    $e->show404();
+} catch (\Exception $e) {
+    die($e->getMessage());
+}

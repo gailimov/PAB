@@ -1,15 +1,18 @@
 <section class="content">
 <?php foreach ($posts as $post) : ?>
     <article>
-        <h1><a href="#" title="Посмотреть все посты за эту дату"><?= $this->getHelper('Date')->russianDate($post['created_at'], false) ?></a> &rarr; <a href="<?= $this->getConfig()->params['url'] ?>/posts/show/<?= $post['slug'] ?>"><?= $post['title'] ?></a></h1>
+        <h1><a href="#" title="Посмотреть все посты за эту дату"><?= $this->getHelper('Date')->russianDate($post['created_at'], false) ?></a> &rarr; <a href="<?= $this->getBaseUrl() ?>/posts/show/<?= $post['slug'] ?>"><?= $post['title'] ?></a></h1>
         <div class="post">
             <?= $post['content'] ?>
         </div>
         <div class="left">
-            <a href="#" rel="tag" title="Посмотреть все посты с этой меткой">запись</a>, <a href="#" rel="tag" title="Посмотреть все посты с этой меткой">искусство</a>
+            <?php $tags = \core\Db::factory('Tags')->getByPostId($post['id']); $formattedTags = array(); foreach ($tags as $tag) : ?>
+                <?php $formattedTags[] = '<a href="#" rel="tag" title="Посмотреть все посты с этой меткой">' . $tag['title'] . '</a>' ?>
+            <?php endforeach ?>
+            <?php echo implode(', ', $formattedTags) ?>
         </div>
         <div class="right">
-            <a href="#"><?= $post['comments_count'] ?> <?= $this->getHelper('Numbers')->getRussianNumberEndings($post['comments_count'], 'комментариев', 'комментарий', 'комментария') ?></a>
+            <a href="<?= $this->getBaseUrl() ?>/posts/show/<?= $post['slug'] ?>#comments"><?= $post['comments_count'] ?> <?= $this->getHelper('Numbers')->getRussianNumberEndings($post['comments_count'], 'комментариев', 'комментарий', 'комментария') ?></a>
         </div>
         <div class="clear"></div>
     </article>

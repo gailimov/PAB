@@ -1,7 +1,6 @@
 <?php
 
 return array(
-    'url' => 'http://projects.loc/pab',
     'title' => 'Pretty Awesome Blog',
     'titleSeparator' => ' / ',
     

@@ -2,7 +2,7 @@
 
 namespace app\controllers;
 
-class AppController extends \core\Controller
+abstract class AppController extends \core\Controller
 {
     /**
      * Title

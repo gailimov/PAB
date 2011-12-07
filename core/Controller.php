@@ -62,6 +62,17 @@ abstract class Controller
     }
     
     /**
+     * Get base URL
+     * 
+     * @return string
+     */
+    public function getBaseUrl()
+    {
+        $router = new Router();
+        return $router->getBaseUrl();
+    }
+    
+    /**
      * Render partial
      * 
      * @param  string $template Template

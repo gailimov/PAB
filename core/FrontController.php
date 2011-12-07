@@ -31,7 +31,7 @@ class FrontController
             $obj->before();
             call_user_func_array(array($obj, $options['action']), $options['params']);
         } else {
-            throw new \Exception('404 Not Found');
+            throw new NotFoundException('Not found');
         }
     }
 }

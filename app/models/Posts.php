@@ -11,13 +11,14 @@ class Posts extends \core\Db
      */
     public function getAll()
     {
-        return $this->_db->fetchAll('SELECT *, id as pid, (
-                                         SELECT COUNT(id)
-                                         FROM comments
-                                         WHERE post_id = pid
-                                     ) AS comments_count
-                                     FROM posts
-                                     ORDER BY created_at DESC');
+        $query = 'SELECT *, id as pid, (
+                      SELECT COUNT(id)
+                      FROM comments
+                      WHERE post_id = pid
+                  ) AS comments_count
+                  FROM posts
+                  ORDER BY created_at DESC';
+        return $this->_db->fetchAll($query);
     }
     
     /**
@@ -28,8 +29,9 @@ class Posts extends \core\Db
      */
     public function getBySlug($slug)
     {
-        return $this->_db->fetchRow('SELECT *
-                                     FROM posts
-                                     WHERE slug = ?', (string) $slug);
+        $query = 'SELECT *
+                  FROM posts
+                  WHERE slug = ?';
+        return $this->_db->fetchRow($query, (string) $slug);
     }
 }
